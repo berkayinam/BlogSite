@@ -4,11 +4,11 @@ minikube ortamına gidiş: eval $(minikube docker-env)
 
 :dönüş eval $(minikube docker-env -u)
 
+ssh -L 8080:192.168.49.2:31488 binam@45.9.30.161
 
 kubectl apply -f auth-deployment.yaml   kubectl delete deployment auth-deployment 
 
-
-çıkılan konteynerleri temizleme docker rm $(docker ps -a -q -f "status=exited")
+çıkılan konteynerleri temizleme : docker rm $(docker ps -a -q -f "status=exited")
 
 
 
@@ -23,14 +23,11 @@ curl -X POST http://192.168.49.2:31488/login \
     
 {"token":"eyJh***********7GebnjYe4BJ28-4_LiAgA"}
 
-
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQ1NzkxMzgsInVzZXJuYW1lIjoidGVzdCJ9.q-I86dhDfj8qQsS1kF3Uc_arNfHHCWRHI1jwfIvVlJg
-
 register ve  login successss. yesssssssss
 
 
-curl -X POST http://192.168.49.2:31660/posts   -H "Content-Type: application/json"   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDQ1NzkxMzgsInVzZXJuYW1lIjoidGVzdCJ9.q-I86dhDfj8qQsS1kF3Uc_arNfHHCWRHI1jwfIvVlJg"   -d '{"title": "İlk Yazı", "content": "Selam dünya!"}'
+curl -X POST http://192.168.49.2:31660/posts   -H "Content-Type: application/json"   -H "Authorization: Bearer eyJhbG**********vVlJg"   -d '{"title": "İlk Yazı", "content": "Selam dünya!"}'
 {"message":"Post created"}
 
-
 yesss post created
+
