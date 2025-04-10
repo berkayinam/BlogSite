@@ -1,25 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-deployment
+  name: post-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: post
   template:
     metadata:
       labels:
-        app: auth
+        app: post
     spec:
       containers:
-      - name: auth
-        image: auth-service:latest
+      - name: post
+        image: post-service:latest
         imagePullPolicy: Never
         ports:
-        - containerPort: 8085
+        - containerPort: 8080
         env:
         - name: JWT_SECRET
           value: "supppppersecretkeyimxD"
-        - name: MONGO_URI
-          value: "mongodb://mongo:27017"
