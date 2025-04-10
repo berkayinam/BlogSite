@@ -22,4 +22,4 @@ spec:
           mountPath: /data/db
       volumes:
       - name: mongo-storage
-        emptyDir: {}  # Veriler pod yeniden başlarsa silinir (şimdilik yeterli)
+        emptyDir: {}

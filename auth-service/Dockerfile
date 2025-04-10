@@ -8,6 +8,7 @@ FROM alpine:latest
 RUN apk add --no-cache libc6-compat
 WORKDIR /
 COPY --from=builder /app/auth-service ./
+ENV JWT_SECRET=supersecretjwtkey
 RUN chmod +x /auth-service
 EXPOSE 8085
 CMD ["./auth-service"]

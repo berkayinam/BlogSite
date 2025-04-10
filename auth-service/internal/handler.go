@@ -26,7 +26,6 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Şifreyi hashle
 	hashedPassword, err := HashPassword(user.Password)
 	if err != nil {
 		http.Error(w, "Password hashing failed", http.StatusInternalServerError)
@@ -34,12 +33,10 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	user.Password = hashedPassword
 
-	// MongoDB bağlantısı
 	collection := Client.Database("authdb").Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Aynı kullanıcı var mı kontrol et
 	count, _ := collection.CountDocuments(ctx, map[string]interface{}{"username": user.Username})
 	if count > 0 {
 		http.Error(w, "Username already exists", http.StatusConflict)
@@ -69,7 +66,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Mongo bağlantısı
 	collection := Client.Database("authdb").Collection("users")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -86,7 +82,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// JWT oluştur
 	token, err := GenerateJWT(storedUser.Username)
 	if err != nil {
 		http.Error(w, "JWT error", http.StatusInternalServerError)
