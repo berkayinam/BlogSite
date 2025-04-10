@@ -31,3 +31,4 @@ curl -X POST http://192.168.49.2:31660/posts   -H "Content-Type: application/jso
 
 yesss post created
 
+![image](https://github.com/user-attachments/assets/c1639a1e-8e33-4fce-8301-cbe14667ff90)
