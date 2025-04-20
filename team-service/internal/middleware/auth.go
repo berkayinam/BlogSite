@@ -2,15 +2,23 @@ package middleware
 
 import (
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = []byte("your-secret-key") // In production, this should be loaded from environment variables
+func getJWTSecret() []byte {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		secret = "supersecretjwtkey" // Default fallback, should match auth service
+	}
+	return []byte(secret)
+}
 
 func AuthMiddleware() gin.HandlerFunc {
+	jwtSecret := getJWTSecret()
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
