@@ -21,3 +21,5 @@ spec:
         env:
         - name: JWT_SECRET
           value: "supppppersecretkeyimxD"
+        - name: ENVIRONMENT
+          value: "production"

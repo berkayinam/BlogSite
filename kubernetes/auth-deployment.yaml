@@ -21,5 +21,7 @@ spec:
         env:
         - name: JWT_SECRET
           value: "supppppersecretkeyimxD"
+        - name: ENVIRONMENT
+          value: "production"
         - name: MONGO_URI
           value: "mongodb://mongo:27017"
