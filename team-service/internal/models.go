@@ -2,29 +2,30 @@ package internal
 
 import (
 	"time"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type Team struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	Name        string            `bson:"name" json:"name"`
-	Description string            `bson:"description" json:"description"`
-	Members     []TeamMember      `bson:"members" json:"members"`
-	CreatedAt   time.Time         `bson:"createdAt" json:"createdAt"`
-	UpdatedAt   time.Time         `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
+	ID          int       `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Members     []TeamMember `json:"members,omitempty"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }
 
 type TeamMember struct {
-	Username  string    `bson:"username" json:"username"`
-	Role      string    `bson:"role" json:"role"` // admin or member
-	JoinedAt  time.Time `bson:"joinedAt" json:"joinedAt"`
+	TeamID    int       `json:"team_id"`
+	Username  string    `json:"username"`
+	Role      string    `json:"role"`
+	JoinedAt  time.Time `json:"joined_at"`
 }
 
 type TeamInvite struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
-	TeamID    primitive.ObjectID `bson:"teamId" json:"teamId"`
-	Username  string            `bson:"username" json:"username"`
-	Status    string            `bson:"status" json:"status"` // pending, accepted, rejected
-	CreatedAt time.Time         `bson:"createdAt" json:"createdAt"`
-	UpdatedAt time.Time         `bson:"updatedAt,omitempty" json:"updatedAt,omitempty"`
+	ID              int       `json:"id"`
+	TeamID          int       `json:"team_id"`
+	InviterUsername string    `json:"inviter_username"`
+	InviteeUsername string    `json:"invitee_username"`
+	Status          string    `json:"status"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
 } 

@@ -1,3 +1,5 @@
+kubectl delete -f kubernetes/
+
 # Comment Service için
 cd comment-service/
 docker build -t comment-service:latest .

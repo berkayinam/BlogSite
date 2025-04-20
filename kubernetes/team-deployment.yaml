@@ -23,28 +23,21 @@ spec:
         env:
         - name: JWT_SECRET
           value: "supppppersecretkeyimxD"
-        - name: MONGODB_URI
-          value: "mongodb://mongo-service:27017"
-        - name: MONGODB_DATABASE
-          value: "myblog"
+        - name: DB_HOST
+          value: "postgres"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: DB_NAME
+          value: "teamservice"
         - name: PORT
-          value: "8084"
-        resources:
-          limits:
-            cpu: "500m"
-            memory: "512Mi"
-          requests:
-            cpu: "200m"
-            memory: "256Mi"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8084
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8084
-          initialDelaySeconds: 5
-          periodSeconds: 5 
+          value: "8084" 

@@ -1,1 +1,27 @@
- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment
+  template:
+    metadata:
+      labels:
+        app: comment
+    spec:
+      containers:
+      - name: comment
+        image: comment-service:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8083
+        env:
+        - name: JWT_SECRET
+          value: "supppppersecretkeyimxD"
+        - name: ENVIRONMENT
+          value: "production"
+        - name: MONGODB_URI
+          value: "mongodb://mongo-service:27017" 
