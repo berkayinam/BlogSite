@@ -56,3 +56,13 @@ localhost%
 ✅ Team listing is working
 ✅ Team membership is working (you were automatically added as admin)
 ✅ Authorization is working (the invite endpoint correctly checks for admin role)
+
+
+
+
+GET    /posts           - List all posts
+POST   /posts           - Create a new post (requires auth)
+GET    /posts/author    - Get posts by author (query param: author)
+GET    /posts/search    - Search posts (query param: q)
+PUT    /posts/manage    - Update a post (query param: title, requires auth)
+DELETE /posts/manage    - Delete a post (query param: title, requires auth)
