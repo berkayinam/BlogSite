@@ -19,26 +19,16 @@ spec:
         image: team-service:latest
         imagePullPolicy: Never
         ports:
-        - containerPort: 8082
+        - containerPort: 8084
         env:
         - name: JWT_SECRET
           value: "supppppersecretkeyimxD"
-        - name: DB_HOST
-          value: postgres
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: username
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secret
-              key: password
-        - name: DB_NAME
-          value: teamservice
-        - name: DB_PORT
-          value: "5432"
+        - name: MONGODB_URI
+          value: "mongodb://mongo-service:27017"
+        - name: MONGODB_DATABASE
+          value: "myblog"
+        - name: PORT
+          value: "8084"
         resources:
           limits:
             cpu: "500m"
@@ -48,13 +38,13 @@ spec:
             memory: "256Mi"
         livenessProbe:
           httpGet:
-            path: /teams
-            port: 8082
+            path: /health
+            port: 8084
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /teams
-            port: 8082
+            path: /health
+            port: 8084
           initialDelaySeconds: 5
           periodSeconds: 5 

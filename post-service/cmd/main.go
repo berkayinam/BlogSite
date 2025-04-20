@@ -41,6 +41,6 @@ func main() {
 		}
 	})
 
-	log.Println("Post service running on :8081")
-	log.Fatal(http.ListenAndServe(":8081", nil))
+	log.Println("Post service running on port 8082")
+	log.Fatal(http.ListenAndServe(":8082", nil))
 }

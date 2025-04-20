@@ -1,56 +1,36 @@
 package main
 
 import (
-	"log"
-
-	"github.com/binam/myblog-project/team-service/internal/database"
-	"github.com/binam/myblog-project/team-service/internal/handlers"
-	"github.com/binam/myblog-project/team-service/internal/middleware"
 	"github.com/gin-gonic/gin"
+	"team-service/internal"
 )
 
 func main() {
-	// Initialize database connection
-	database.InitDB()
-
-	// Create Gin router
 	r := gin.Default()
 
-	// Add CORS middleware
-	r.Use(func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Origin, Authorization, Content-Type")
+	// Initialize MongoDB connection
+	if err := internal.ConnectToMongo(); err != nil {
+		panic(err)
+	}
 
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(204)
-			return
-		}
+	// Initialize repositories and handlers
+	teamRepo := internal.NewTeamRepository(internal.Client.Database("myblog"))
+	handler := internal.NewTeamHandler(teamRepo)
 
-		c.Next()
+	// Routes
+	r.POST("/teams", internal.AuthMiddleware(handler.CreateTeam))
+	r.GET("/teams/:id", handler.GetTeam)
+	r.GET("/teams/user", internal.AuthMiddleware(handler.GetUserTeams))
+	r.PUT("/teams/:id", internal.AuthMiddleware(handler.UpdateTeam))
+	r.DELETE("/teams/:id", internal.AuthMiddleware(handler.DeleteTeam))
+	r.POST("/teams/:id/invite", internal.AuthMiddleware(handler.InviteMember))
+	r.POST("/teams/invites/:id", internal.AuthMiddleware(handler.RespondToInvite))
+	r.DELETE("/teams/:id/members/:username", internal.AuthMiddleware(handler.RemoveMember))
+
+	// Health check
+	r.GET("/health", func(c *gin.Context) {
+		c.Status(200)
 	})
 
-	// Public routes
-	r.GET("/teams", handlers.ListTeams)
-	r.GET("/teams/:id", handlers.GetTeam)
-
-	// Protected routes
-	protected := r.Group("/")
-	protected.Use(middleware.AuthMiddleware())
-	{
-		// Team management
-		protected.POST("/teams", handlers.CreateTeam)
-		
-		// Team invitations
-		protected.POST("/teams/invite", handlers.InviteToTeam)
-		protected.POST("/teams/invite/respond", handlers.RespondToInvite)
-		
-		// Join requests
-		protected.POST("/teams/join/request", handlers.RequestToJoinTeam)
-	}
-
-	// Start server
-	if err := r.Run(":8082"); err != nil {
-		log.Fatalf("Failed to start server: %v", err)
-	}
+	r.Run(":8084")
 } 
